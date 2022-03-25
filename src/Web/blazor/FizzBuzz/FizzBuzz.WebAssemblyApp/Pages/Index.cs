@@ -1,7 +1,13 @@
-﻿namespace FizzBuzz.WebAssemblyApp.Pages
+﻿using FizzBuzz.WebAssemblyApp.Services;
+using Microsoft.AspNetCore.Components;
+
+namespace FizzBuzz.WebAssemblyApp.Pages
 {
     public partial class Index
     {
+        [Inject]
+        public IFizzBuzzService FizzBuzzService { get; set; } = null!;
+
         public List<string?> Values { get; set; } = new List<string?>();
         public List<KeyValuePair<string?, List<string>>> Results { get; set; } = new List<KeyValuePair<string?, List<string>>>();
 
@@ -19,53 +25,7 @@
 
         public void FizzBuzz()
         {
-            for (int i = 0; i < Values.Count; i++)
-            {
-                if (Values[i] == null)
-                {
-                    Results.Add(new KeyValuePair<string?, List<string>>(Values[i], new List<string> { "Invalid Item" }));
-                    continue;
-                }
-
-                if (int.TryParse(Values[i], out int number))
-                {
-                    var operations = new List<string>();
-
-                    if (number % 15 == 0)
-                    {
-                        Results.Add(new KeyValuePair<string?, List<string>>(Values[i], new List<string> { "FizzBuzz" }));
-                        continue;
-                    }
-                    
-                    if (number % 3 == 0)
-                    {
-                        Results.Add(new KeyValuePair<string?, List<string>>(Values[i], new List<string> { "Fizz" }));
-                        continue;
-                    }
-                    else 
-                    {
-                        operations.Add($"Divided {number} by 3");
-                    }
-
-                    if (number % 5 == 0)
-                    {
-                        Results.Add(new KeyValuePair<string?, List<string>>(Values[i], new List<string> { "Buzz" }));
-                        continue;
-                    }
-                    else
-                    {
-                        operations.Add($"Divided {number} by 5");
-                    }
-
-                    Results.Add(new KeyValuePair<string?, List<string>>(Values[i], operations));
-                    continue;
-                }
-                else 
-                {
-                    Results.Add(new KeyValuePair<string?, List<string>>(Values[i], new List<string> { "Invalid Item" }));
-                    continue;
-                }
-            }
+            Results = FizzBuzzService.FizzBuzz(Values);
         }
 
         public void Reset()
