@@ -20,21 +20,40 @@
        ]
     </div>
     <hr />
-    <h2>Result</h2>
+    <h2>Results</h2>
     <div>
-        @foreach (var result in Results)
-        {
-            <h4>Input: @(result.Key == null ? "<empty>" : result.Key)</h4>
-            <h4>Result: </h4>
-            <div>
-                <ul>
-                @foreach(var operation in result.Value)
-                {
-                    <li>@operation</li>
-                }
-                </ul>
-            </div>
-        }
+        <table>
+          <colgroup>
+             <col span="1" style="width: 250px;">
+             <col span="1" style="width: 250px;">
+          </colgroup>
+          <tbody>
+              <tr style="background-color: lightskyblue;">
+                <th>Input</th>
+                <th>Result</th>
+              </tr>
+              @foreach (var result in Results)
+              {
+                  @for(int i = 0; i < result.Value.Count; i++)
+                  {
+                      if (i == 0)
+                      {
+                          <tr>
+                            <td>@(result.Key == null ? "<empty>" : result.Key)</td>
+                            <td>@result.Value[i]</td>
+                          </tr>
+                      }
+                      else
+                      {
+                          <tr>
+                            <td></td>
+                            <td>@result.Value[i]</td>
+                          </tr>
+                      }
+                   }
+              }
+          </tbody>
+        </table>
     </div>
 
     <button class="btn btn-primary" type="button" @onclick="@FizzBuzz">Fizz Buzz</button>
